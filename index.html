@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diino's Toolbox — one terminal, every tool</title>
+<meta name="description" content="Diino's Toolbox: a single Windows terminal for everything you'd otherwise hunt across ten apps for. One keypress, no mouse.">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Diino's Toolbox">
+<meta property="og:description" content="One terminal. Every tool. Single keypress, zero friction.">
+<meta property="og:image" content="assets/poster.jpg">
+<meta property="og:type" content="website">
+
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- scanline / grain overlay -->
+<div class="crt-overlay" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<!-- ambient braille heartagram sigil, drawn in JS -->
+<canvas id="sigil" aria-hidden="true"></canvas>
+
+<main>
+
+  <section class="hero" id="hero">
+
+    <div class="termbar">
+      <div class="termbar-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="termbar-title">diino@toolbox:~$ ./run</div>
+      <div class="termbar-status" id="termStatus">BOOTING…</div>
+    </div>
+
+    <div class="video-frame">
+      <video
+        id="introVideo"
+        muted
+        playsinline
+        preload="auto"
+        poster="assets/poster.jpg">
+        <source src="assets/intro.mp4" type="video/mp4">
+      </video>
+      <div class="video-dim" id="videoDim" aria-hidden="true"></div>
+      <div class="scan" aria-hidden="true"></div>
+    </div>
+
+    <div class="hero-content" id="heroContent">
+
+      <p class="eyebrow" id="eyebrow"><span class="blink">█</span> press any key to continue</p>
+
+      <h1 class="title">
+        <span class="letter-d-wrap">
+          <svg class="horns" viewBox="0 0 140 70" aria-hidden="true">
+            <defs>
+              <linearGradient id="hornGrad" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stop-color="#5c0d17"/>
+                <stop offset="45%" stop-color="#c81e34"/>
+                <stop offset="100%" stop-color="#ff5a6e"/>
+                <animate attributeName="x1" values="0;0.3;0" dur="4.5s" repeatCount="indefinite"/>
+              </linearGradient>
+            </defs>
+            <path class="horn horn-l" d="M62 62 C 44 50, 30 34, 34 14 C 36 4, 44 -2, 50 4 C 56 10, 52 22, 56 32 C 59 40, 61 52, 62 62 Z"/>
+            <path class="horn horn-r" d="M78 62 C 96 50, 110 34, 106 14 C 104 4, 96 -2, 90 4 C 84 10, 88 22, 84 32 C 81 40, 79 52, 78 62 Z"/>
+          </svg>
+          <span class="letter-d">D</span>
+        </span><span class="rest">iino's Toolbox</span>
+      </h1>
+
+      <p class="tagline">One terminal. Every tool. No mouse required.</p>
+
+      <a href="#" class="dl-btn" id="downloadBtn" data-cdn="https://cdn.discordapp.com/attachments/PLACEHOLDER/PLACEHOLDER/DiinosToolbox_Setup.exe">
+        <span class="dl-key">[ENTER]</span>
+        <span class="dl-label">Download Diino's Toolbox</span>
+        <span class="dl-meta">.exe · Windows · v0.1</span>
+      </a>
+
+      <p class="hint">or clone the source →
+        <a href="https://github.com/" target="_blank" rel="noopener" id="repoLink">github.com/diino</a>
+      </p>
+
+    </div>
+
+  </section>
+
+  <section class="menu" id="menu">
+    <div class="menu-head">
+      <span class="menu-num">MAIN MENU</span>
+      <span class="menu-rule"></span>
+      <span class="menu-hint">single keypress · no mouse</span>
+    </div>
+
+    <ul class="menu-list">
+      <li class="menu-item" data-key="T" tabindex="0">
+        <span class="key">T</span>
+        <span class="mi-body">
+          <span class="mi-title">Toolbox</span>
+          <span class="mi-desc">Every utility, one flat list. Type, hit enter, done.</span>
+        </span>
+      </li>
+      <li class="menu-item" data-key="O" tabindex="0">
+        <span class="key">O</span>
+        <span class="mi-body">
+          <span class="mi-title">Office Downloader</span>
+          <span class="mi-desc">Pulls straight from Microsoft's Click-to-Run CDN. No installer bloat.</span>
+        </span>
+      </li>
+      <li class="menu-item" data-key="S" tabindex="0">
+        <span class="key">S</span>
+        <span class="mi-body">
+          <span class="mi-title">System Utilities</span>
+          <span class="mi-desc">The stuff you reach for weekly, kept where you can actually find it.</span>
+        </span>
+      </li>
+      <li class="menu-item" data-key="Q" tabindex="0">
+        <span class="key">Q</span>
+        <span class="mi-body">
+          <span class="mi-title">Quit</span>
+          <span class="mi-desc">Closes clean. No tray icon left behind.</span>
+        </span>
+      </li>
+    </ul>
+
+    <p class="menu-footnote">try it — this menu answers to your keyboard too.</p>
+  </section>
+
+  <footer class="site-footer">
+    <span class="fp-logo">diino<span class="fp-dot">■</span>toolbox</span>
+    <span class="fp-sep">/</span>
+    <span>built for Windows Terminal</span>
+    <span class="fp-sep">/</span>
+    <a href="https://github.com/" target="_blank" rel="noopener">source</a>
+  </footer>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
