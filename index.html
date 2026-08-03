@@ -12,7 +12,8 @@
 <meta property="og:image" content="assets/poster.jpg">
 <meta property="og:type" content="website">
 
-<link rel="icon" href="data:,">
+<link rel="icon" id="favicon" type="image/svg+xml" href="favicon.svg">
+<link rel="shortcut icon" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
@@ -56,22 +57,32 @@
 
       <p class="eyebrow" id="eyebrow"><span class="blink">█</span> press any key to continue</p>
 
-      <h1 class="title">
-        <span class="letter-d-wrap">
-          <svg class="horns" viewBox="0 0 140 70" aria-hidden="true">
+      <h1 class="title" aria-label="Diino's Toolbox">
+        <span class="sigil-icon-wrap" aria-hidden="true">
+          <svg class="sigil-icon" viewBox="0 0 100 100" aria-hidden="true">
             <defs>
-              <linearGradient id="hornGrad" x1="0" y1="1" x2="0" y2="0">
-                <stop offset="0%" stop-color="#5c0d17"/>
-                <stop offset="45%" stop-color="#c81e34"/>
-                <stop offset="100%" stop-color="#ff5a6e"/>
-                <animate attributeName="x1" values="0;0.3;0" dur="4.5s" repeatCount="indefinite"/>
+              <linearGradient id="sigilGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff5a6e"/>
+                <stop offset="50%" stop-color="#dc243c"/>
+                <stop offset="100%" stop-color="#7a0f1d"/>
               </linearGradient>
+              <filter id="sigilGlow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#ff3350" flood-opacity="0.8"/>
+              </filter>
             </defs>
-            <path class="horn horn-l" d="M62 62 C 44 50, 30 34, 34 14 C 36 4, 44 -2, 50 4 C 56 10, 52 22, 56 32 C 59 40, 61 52, 62 62 Z"/>
-            <path class="horn horn-r" d="M78 62 C 96 50, 110 34, 106 14 C 104 4, 96 -2, 90 4 C 84 10, 88 22, 84 32 C 81 40, 79 52, 78 62 Z"/>
+
+            <!-- Outer Heart Outline -->
+            <path fill="none" stroke="url(#sigilGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" filter="url(#sigilGlow)" d="
+              M 50 90 C 18 65 5 46 5 28 C 5 12 17 4 31 4 C 40 4 47 9 50 17 C 53 9 60 4 69 4 C 83 4 95 12 95 28 C 95 46 82 65 50 90 Z
+            "/>
+
+            <!-- Inverted Pentagram Interlocking Star Chords -->
+            <path fill="none" stroke="url(#sigilGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" filter="url(#sigilGlow)" d="
+              M 50 86 L 20 32 L 72 62 L 28 62 L 80 32 Z
+            "/>
           </svg>
-          <span class="letter-d">D</span>
-        </span><span class="rest">iino's Toolbox</span>
+        </span>
+        <span class="title-text" aria-hidden="true">Diino's Toolbox</span>
       </h1>
 
       <p class="tagline">One terminal. Every tool. No mouse required.</p>
@@ -82,62 +93,11 @@
         <span class="dl-meta">.exe · Windows · v0.1</span>
       </a>
 
-      <p class="hint">or clone the source →
-        <a href="https://github.com/" target="_blank" rel="noopener" id="repoLink">github.com/diino</a>
-      </p>
+      <p class="foot-line">diino<span class="fp-dot">■</span>toolbox — built for Windows Terminal</p>
 
     </div>
 
   </section>
-
-  <section class="menu" id="menu">
-    <div class="menu-head">
-      <span class="menu-num">MAIN MENU</span>
-      <span class="menu-rule"></span>
-      <span class="menu-hint">single keypress · no mouse</span>
-    </div>
-
-    <ul class="menu-list">
-      <li class="menu-item" data-key="T" tabindex="0">
-        <span class="key">T</span>
-        <span class="mi-body">
-          <span class="mi-title">Toolbox</span>
-          <span class="mi-desc">Every utility, one flat list. Type, hit enter, done.</span>
-        </span>
-      </li>
-      <li class="menu-item" data-key="O" tabindex="0">
-        <span class="key">O</span>
-        <span class="mi-body">
-          <span class="mi-title">Office Downloader</span>
-          <span class="mi-desc">Pulls straight from Microsoft's Click-to-Run CDN. No installer bloat.</span>
-        </span>
-      </li>
-      <li class="menu-item" data-key="S" tabindex="0">
-        <span class="key">S</span>
-        <span class="mi-body">
-          <span class="mi-title">System Utilities</span>
-          <span class="mi-desc">The stuff you reach for weekly, kept where you can actually find it.</span>
-        </span>
-      </li>
-      <li class="menu-item" data-key="Q" tabindex="0">
-        <span class="key">Q</span>
-        <span class="mi-body">
-          <span class="mi-title">Quit</span>
-          <span class="mi-desc">Closes clean. No tray icon left behind.</span>
-        </span>
-      </li>
-    </ul>
-
-    <p class="menu-footnote">try it — this menu answers to your keyboard too.</p>
-  </section>
-
-  <footer class="site-footer">
-    <span class="fp-logo">diino<span class="fp-dot">■</span>toolbox</span>
-    <span class="fp-sep">/</span>
-    <span>built for Windows Terminal</span>
-    <span class="fp-sep">/</span>
-    <a href="https://github.com/" target="_blank" rel="noopener">source</a>
-  </footer>
 
 </main>
 

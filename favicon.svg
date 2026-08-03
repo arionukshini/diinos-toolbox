@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="favBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#180c0e"/>
+      <stop offset="100%" stop-color="#080405"/>
+    </linearGradient>
+    <linearGradient id="favGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff5a6e"/>
+      <stop offset="50%" stop-color="#dc243c"/>
+      <stop offset="100%" stop-color="#8a0c1b"/>
+    </linearGradient>
+    <filter id="favGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="16" flood-color="#ff3350" flood-opacity="0.8"/>
+    </filter>
+  </defs>
+
+  <!-- Dark container background with red border -->
+  <rect width="512" height="512" rx="120" fill="url(#favBg)"/>
+  <rect width="496" height="496" x="8" y="8" rx="112" fill="none" stroke="#5c121e" stroke-width="8"/>
+
+  <!-- Heartagram Sigil Icon -->
+  <g transform="translate(106, 106) scale(3.0)" filter="url(#favGlow)">
+    <!-- Heart Outline -->
+    <path fill="none" stroke="url(#favGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="
+      M 50 90 C 18 65 5 46 5 28 C 5 12 17 4 31 4 C 40 4 47 9 50 17 C 53 9 60 4 69 4 C 83 4 95 12 95 28 C 95 46 82 65 50 90 Z
+    "/>
+
+    <!-- Inverted Pentagram Star Chords -->
+    <path fill="none" stroke="url(#favGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="
+      M 50 86 L 20 32 L 72 62 L 28 62 L 80 32 Z
+    "/>
+  </g>
+</svg>

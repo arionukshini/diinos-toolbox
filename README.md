@@ -29,11 +29,13 @@ assets/poster.jpg last-frame fallback poster (shown before the video can play)
    and grab a fresh link. For anything long-term, a GitHub Releases asset
    is more stable than a Discord CDN link.
 
-2. **Update the repo link** in `index.html` (`id="repoLink"` and the footer
-   "source" link) to point at your actual GitHub repo.
-
-3. (Optional) Swap `assets/intro.mp4` for a re-exported/compressed version
+2. (Optional) Swap `assets/intro.mp4` for a re-exported/compressed version
    if you want a smaller file size — it's currently ~6.3MB.
+
+There's no GitHub repo link on the page right now since the repo isn't
+public. Once it is, you can add one back in — a small link near the
+download button, styled like `.dl-meta`, would fit without breaking the
+single-screen layout.
 
 ## Running locally
 
@@ -65,9 +67,16 @@ supports both.
   button fade in.
 - Pressing `Enter`/`Space` before the video finishes skips straight to
   the content, for anyone who's seen it before.
-- Pressing `Enter` after that triggers the download button, and `T` / `O`
-  / `S` / `Q` highlight the matching menu row — a small nod to the app's
-  own single-keypress navigation.
+- Pressing `Enter` after that triggers the download button, a small nod
+  to the app's own single-keypress navigation.
+- The whole page is one screen — no scrolling, on desktop or mobile.
+  Everything (video, title, tagline, download button) is sized with
+  viewport-relative units so it fits within `100vh`/`100dvh` regardless
+  of screen height.
+- The horns on the "D" are hand-drawn SVG paths (not a font glyph),
+  filled with a red-to-pale gradient and a dark outline, echoing a
+  curled devil-horn silhouette. They sway gently; the gradient itself
+  animates too.
 - The faint dot pattern in the top-right is a canvas-drawn braille-style
   sigil, echoing the heartagram mark from the app itself. It's ambient
   and low-opacity by design — it should read as texture, not decoration
