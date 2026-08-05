@@ -4,30 +4,21 @@
       <stop offset="0%" stop-color="#180c0e"/>
       <stop offset="100%" stop-color="#080405"/>
     </linearGradient>
-    <linearGradient id="favGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="favGrad" gradientUnits="userSpaceOnUse" x1="16" y1="22" x2="84" y2="80">
       <stop offset="0%" stop-color="#ff5a6e"/>
-      <stop offset="50%" stop-color="#dc243c"/>
-      <stop offset="100%" stop-color="#8a0c1b"/>
+      <stop offset="50%" stop-color="#ff3350"/>
+      <stop offset="100%" stop-color="#c81e34"/>
     </linearGradient>
-    <filter id="favGlow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="4" stdDeviation="16" flood-color="#ff3350" flood-opacity="0.8"/>
-    </filter>
   </defs>
 
-  <!-- Dark container background with red border -->
+  <!-- Dark rounded terminal-window background -->
   <rect width="512" height="512" rx="120" fill="url(#favBg)"/>
-  <rect width="496" height="496" x="8" y="8" rx="112" fill="none" stroke="#5c121e" stroke-width="8"/>
+  <rect x="18" y="18" width="476" height="476" rx="104" fill="none" stroke="#3a1d1d" stroke-width="4"/>
 
-  <!-- Heartagram Sigil Icon -->
-  <g transform="translate(106, 106) scale(3.0)" filter="url(#favGlow)">
-    <!-- Heart Outline -->
-    <path fill="none" stroke="url(#favGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="
-      M 50 90 C 18 65 5 46 5 28 C 5 12 17 4 31 4 C 40 4 47 9 50 17 C 53 9 60 4 69 4 C 83 4 95 12 95 28 C 95 46 82 65 50 90 Z
-    "/>
-
-    <!-- Inverted Pentagram Star Chords -->
-    <path fill="none" stroke="url(#favGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="
-      M 50 86 L 20 32 L 72 62 L 28 62 L 80 32 Z
-    "/>
+  <!-- Prompt chevron + cursor block -->
+  <g transform="translate(86,83) scale(3.4)">
+    <path fill="none" stroke="url(#favGrad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"
+      d="M22,28 L50,50 L22,72"/>
+    <rect x="58" y="64" width="26" height="16" rx="8" fill="url(#favGrad)"/>
   </g>
 </svg>

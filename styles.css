@@ -203,26 +203,6 @@ main{ position:relative; z-index:1; }
   gap:0.25em;
 }
 
-.sigil-icon-wrap{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.sigil-icon{
-  height:0.95em;
-  width:auto;
-  display:block;
-  overflow:visible;
-  filter:drop-shadow(0 0 16px rgba(255,51,80,0.7));
-  animation:sigilpulse 4s ease-in-out infinite;
-}
-
-@keyframes sigilpulse{
-  0%, 100%{ transform:scale(1); filter:drop-shadow(0 0 14px rgba(255,51,80,0.6)); }
-  50%{ transform:scale(1.06); filter:drop-shadow(0 0 26px rgba(255,51,80,0.95)); }
-}
-
 .title-text{
   background:linear-gradient(180deg, #ff5a6e 0%, var(--red-1) 45%, #c81e34 100%);
   -webkit-background-clip:text;
@@ -235,14 +215,14 @@ main{ position:relative; z-index:1; }
 
 .tagline{
   margin-top:clamp(8px, 2vh, 18px);
-  color:#dfcece;
+  color:var(--ink);
   font-size:clamp(14px, 1.7vw, 17px);
   letter-spacing:.03em;
   opacity:0;
   transition:opacity .6s ease .25s;
-  text-shadow:0 1px 8px rgba(0,0,0,0.8);
+  text-shadow:0 2px 12px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.6);
 }
-.hero-content.show .tagline{ opacity:1; }
+.hero-content.show .tagline{ opacity:0.85; }
 
 .dl-btn{
   margin-top:clamp(16px, 4vh, 34px);
@@ -295,8 +275,9 @@ main{ position:relative; z-index:1; }
 
 .dl-meta{
   font-size:11px;
-  color:#d8c4c4;
-  border-left:1px solid rgba(255, 51, 80, 0.35);
+  color:var(--ink);
+  opacity:0.7;
+  border-left:1px solid rgba(255, 51, 80, 0.4);
   padding-left:12px;
 }
 
@@ -304,12 +285,12 @@ main{ position:relative; z-index:1; }
   margin-top:clamp(16px, 3vh, 28px);
   font-size:12px;
   letter-spacing:.08em;
-  color:#c8b0b0;
+  color:var(--ink);
   opacity:0;
   transition:opacity .6s ease .5s;
-  text-shadow:0 1px 6px rgba(0,0,0,0.7);
+  text-shadow:0 2px 10px rgba(0,0,0,0.9);
 }
-.hero-content.show .foot-line{ opacity:1; }
+.hero-content.show .foot-line{ opacity:0.55; }
 .fp-dot{ color:var(--red-1); font-size:9px; vertical-align:middle; margin:0 4px; }
 
 /* ---------- responsive ---------- */
