@@ -10,12 +10,16 @@
   const heroContent = document.getElementById('heroContent');
   const status = document.getElementById('termStatus');
   const eyebrow = document.getElementById('eyebrow');
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   let revealed = false;
+  let failSafe;
 
   function reveal() {
     if (revealed) return;
     revealed = true;
+    clearTimeout(failSafe);
+    video.pause();
     dim.classList.add('on');
     status.textContent = 'READY';
     status.classList.add('ready');
@@ -23,6 +27,7 @@
   }
 
   function tryPlay() {
+    if (revealed) return;
     const p = video.play();
     if (p && typeof p.catch === 'function') {
       p.catch(() => {
@@ -43,10 +48,12 @@
 
   // Safety net: if video can't load at all, don't block the page forever.
   video.addEventListener('error', reveal);
-  const failSafe = setTimeout(reveal, 9000);
+  failSafe = setTimeout(reveal, 9000);
   video.addEventListener('ended', () => clearTimeout(failSafe));
 
-  if (video.readyState >= 2) {
+  if (motionPreference.matches || navigator.connection?.saveData) {
+    reveal();
+  } else if (video.readyState >= 2) {
     tryPlay();
   } else {
     video.addEventListener('canplay', tryPlay, { once: true });
@@ -58,24 +65,22 @@
     reveal();
   }
   eyebrow.addEventListener('click', skipIntro);
-  window.addEventListener('keydown', (e) => {
-    if (!revealed && (e.key === 'Enter' || e.key === ' ')) {
-      e.preventDefault();
-      skipIntro();
-    }
-  }, { once: false });
+  window.addEventListener('pointerdown', skipIntro, { once: true });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && !revealed) reveal();
+  });
 
   /* ---------------------------------------------------------
      2. Download button
-     Swap data-cdn for the real Discord CDN link when ready.
+     Keep the actual href usable even when JavaScript is unavailable.
   --------------------------------------------------------- */
   const dlBtn = document.getElementById('downloadBtn');
   const cdnUrl = dlBtn.dataset.cdn;
-  const isPlaceholder = cdnUrl.includes('PLACEHOLDER');
+  const isPlaceholder = !cdnUrl || cdnUrl.includes('PLACEHOLDER');
 
   dlBtn.addEventListener('click', (e) => {
-    e.preventDefault();
     if (isPlaceholder) {
+      e.preventDefault();
       const meta = dlBtn.querySelector('.dl-meta');
       const original = meta.textContent;
       meta.textContent = 'link not set — edit data-cdn in index.html';
@@ -83,13 +88,22 @@
       setTimeout(() => { meta.textContent = original; }, 3200);
       return;
     }
-    window.location.href = cdnUrl;
   });
 
   // Enter triggers the download once the page has revealed, echoing the
   // app's own single-keypress navigation.
   window.addEventListener('keydown', (e) => {
-    if (revealed && e.key === 'Enter' && document.activeElement !== dlBtn) {
+    if (e.defaultPrevented || e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (!revealed) {
+      // Returning prevents this same keypress from also starting a download.
+      if (e.key.length === 1 || e.key === 'Enter' || e.key === 'Escape' || e.key === 'Tab') {
+        if (e.key !== 'Tab') e.preventDefault();
+        skipIntro();
+      }
+      return;
+    }
+    if (e.key === 'Enter' && document.activeElement === document.body) {
+      e.preventDefault();
       dlBtn.click();
     }
   });
@@ -129,16 +143,13 @@
     canvas.style.width = window.innerWidth + 'px';
     canvas.style.height = window.innerHeight + 'px';
   }
-  resize();
-  window.addEventListener('resize', resize);
-
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let animationFrame;
   let t = 0;
 
   function drawSigil() {
     ctx.clearRect(0, 0, w, h);
 
-    const cell = Math.max(4, Math.min(w, h) * 0.012) * dpr;
+    const cell = Math.max(4, Math.min(window.innerWidth, window.innerHeight) * 0.012) * dpr;
     const cols = rows[0].length;
     const rcount = rows.length;
     const gridW = cell * cols;
@@ -146,7 +157,7 @@
     const originX = w - gridW - 40 * dpr;
     const originY = h * 0.14;
 
-    const breathe = reduceMotion ? 0.5 : (Math.sin(t) * 0.5 + 0.5);
+    const breathe = motionPreference.matches ? 0.5 : (Math.sin(t) * 0.5 + 0.5);
     const baseAlpha = 0.05 + breathe * 0.10;
 
     for (let r = 0; r < rcount; r++) {
@@ -154,7 +165,7 @@
         if (rows[r][c] !== '1') continue;
         const x = originX + c * cell;
         const y = originY + r * cell;
-        const flicker = reduceMotion ? 1 : (0.7 + 0.3 * Math.sin(t * 1.7 + r * 0.6 + c * 0.4));
+        const flicker = motionPreference.matches ? 1 : (0.7 + 0.3 * Math.sin(t * 1.7 + r * 0.6 + c * 0.4));
         ctx.fillStyle = `rgba(255, 51, 80, ${(baseAlpha * flicker).toFixed(3)})`;
         ctx.beginPath();
         ctx.arc(x, y, cell * 0.32, 0, Math.PI * 2);
@@ -163,10 +174,23 @@
     }
 
     t += 0.012;
-    requestAnimationFrame(drawSigil);
+    if (!motionPreference.matches && !document.hidden) {
+      animationFrame = requestAnimationFrame(drawSigil);
+    }
   }
 
-  requestAnimationFrame(drawSigil);
+  function refreshSigil() {
+    cancelAnimationFrame(animationFrame);
+    resize();
+    drawSigil();
+  }
+  window.addEventListener('resize', refreshSigil);
+  document.addEventListener('visibilitychange', refreshSigil);
+  motionPreference.addEventListener('change', () => {
+    if (motionPreference.matches) reveal();
+    refreshSigil();
+  });
+  refreshSigil();
 
 })();
 
