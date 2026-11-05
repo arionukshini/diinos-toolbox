@@ -209,6 +209,8 @@
     ['06', 'Downloads folder', 'Find your downloaded installers', 'Open your Windows Downloads folder. Completed app downloads also open it automatically.', 'Main menu → 6'],
     ['07', 'Movie search', 'Find a title on Heartive', 'Type a movie title in the app to open Heartive search results in your browser.', 'Main menu → 7 → 1'],
     ['08', 'Game search', 'Search FitGirl and SteamRIP together', 'Type a game title to open search results on both sites. The Games menu also has individual site links and qBittorrent access.', 'Main menu → 8 → 1'],
+    ['I', 'System info', 'CPU, RAM, graphics and disk space', 'Read your Windows system information locally. Hardware details are cached and live memory and disk values refresh without starting PowerShell.', 'Main menu → I; R to refresh'],
+    ['U', 'Update checker', 'Check for new Toolbox releases', 'Check the public release announcement on this website. If a newer version is available, press D in the app to open its download.', 'Main menu → U; R to check again'],
   ];
   let previousFocus;
   function showTools() {
