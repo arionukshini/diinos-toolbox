@@ -94,6 +94,8 @@
   // app's own single-keypress navigation.
   window.addEventListener('keydown', (e) => {
     if (e.defaultPrevented || e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (toolsMenu.open || e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
+    if (e.key.toLowerCase() === 'h') { e.preventDefault(); reveal(); openTools(); return; }
     if (!revealed) {
       // Returning prevents this same keypress from also starting a download.
       if (e.key.length === 1 || e.key === 'Enter' || e.key === 'Escape' || e.key === 'Tab') {
@@ -191,6 +193,97 @@
     refreshSigil();
   });
   refreshSigil();
+
+  const toolsMenu = document.getElementById('toolsMenu');
+  const toolsTrigger = document.getElementById('toolsTrigger');
+  const toolSearch = document.getElementById('toolSearch');
+  const results = document.getElementById('toolResults');
+  const detail = document.getElementById('toolDetail');
+  const catalog = [
+    ['01', 'Windows / Office activation', 'Activation tool access', 'Opens the third-party activation tool after confirmation in the Windows app.', 'Main menu → 1'],
+    ['02', 'Office downloader', 'Microsoft installers in 42 languages', 'Choose an Office language. The app downloads the official Microsoft installer and shows progress.', 'Main menu → 2 → Choose a language'],
+    ['03', 'qBittorrent', 'Detect an existing client or download its installer', 'The app checks for qBittorrent first. Open an existing installation or download the official installer.', 'Main menu → 3, or Games → 2'],
+    ['04', 'Minecraft tools', 'Bedrock setup, Java launchers and clients', 'Browse Minecraft Bedrock setup, Prism, PineconeMC, Freesm and Flarial tools.', 'Main menu → 4'],
+    ['BE', 'Minecraft Bedrock setup', 'Store, setup download and install folder', 'Open the Store, download the setup archive, or open the Minecraft install folder. Option 4 asks before excluding that same folder from Defender scans.', 'Main menu → 4 → 1'],
+    ['05', 'Defender folder exclusion', 'Choose a folder and confirm the change', 'An explicit action in the Windows app. Administrator approval is requested only when needed; opening menus never changes exclusions.', 'Main menu → 5'],
+    ['06', 'Downloads folder', 'Find your downloaded installers', 'Open your Windows Downloads folder. Completed app downloads also open it automatically.', 'Main menu → 6'],
+    ['07', 'Movie search', 'Find a title on Heartive', 'Type a movie title in the app to open Heartive search results in your browser.', 'Main menu → 7 → 1'],
+    ['08', 'Game search', 'Search FitGirl and SteamRIP together', 'Type a game title to open search results on both sites. The Games menu also has individual site links and qBittorrent access.', 'Main menu → 8 → 1'],
+  ];
+  let previousFocus;
+  function showTools() {
+    detail.hidden = true;
+    results.hidden = false;
+    const query = toolSearch.value.trim().toLowerCase();
+    const matching = catalog.filter(item => item.join(' ').toLowerCase().includes(query));
+    results.replaceChildren();
+    matching.forEach(item => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'tool-item';
+      const symbol = document.createElement('span');
+      symbol.className = 'tool-symbol';
+      symbol.textContent = item[0];
+      symbol.setAttribute('aria-hidden', 'true');
+      const text = document.createElement('span');
+      const name = document.createElement('span');
+      name.className = 'tool-name';
+      name.textContent = item[1];
+      const summary = document.createElement('span');
+      summary.className = 'tool-summary';
+      summary.textContent = item[2];
+      text.append(name, summary);
+      const arrow = document.createElement('span');
+      arrow.className = 'tool-arrow';
+      arrow.textContent = '›';
+      arrow.setAttribute('aria-hidden', 'true');
+      button.append(symbol, text, arrow);
+      button.addEventListener('click', () => {
+        results.hidden = true;
+        document.getElementById('noTools').hidden = true;
+        detail.hidden = false;
+        document.getElementById('detailTitle').textContent = item[1];
+        document.getElementById('detailCopy').textContent = item[3];
+        document.getElementById('detailPath').textContent = 'In the Windows app: ' + item[4];
+        document.getElementById('backTools').focus();
+      });
+      results.append(button);
+    });
+    document.getElementById('noTools').hidden = matching.length > 0;
+    document.getElementById('toolCount').textContent = matching.length + ' tools';
+  }
+  function openTools() {
+    previousFocus = document.activeElement;
+    toolSearch.value = '';
+    showTools();
+    toolsMenu.showModal();
+    toolSearch.focus();
+  }
+  toolsTrigger.addEventListener('click', openTools);
+  document.getElementById('closeTools').addEventListener('click', () => toolsMenu.close());
+  toolsMenu.addEventListener('close', () => previousFocus?.focus());
+  toolsMenu.addEventListener('click', event => { if (event.target === toolsMenu) {
+    const r = toolsMenu.getBoundingClientRect();
+    if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) toolsMenu.close();
+  }});
+  toolSearch.addEventListener('input', showTools);
+  document.getElementById('backTools').addEventListener('click', () => { showTools(); toolSearch.focus(); });
+  toolsMenu.addEventListener('keydown', event => {
+    if (detail.hidden && ['ArrowDown', 'ArrowUp'].includes(event.key)) {
+      const buttons = [...results.querySelectorAll('button')];
+      if (!buttons.length) return;
+      event.preventDefault();
+      const current = buttons.indexOf(document.activeElement);
+      const next = current < 0
+        ? (event.key === 'ArrowDown' ? 0 : buttons.length - 1)
+        : (current + (event.key === 'ArrowDown' ? 1 : -1) + buttons.length) % buttons.length;
+      buttons[next].focus();
+      buttons[next].scrollIntoView({block:'nearest'});
+    } else if (event.key === 'Enter' && document.activeElement === toolSearch) {
+      event.preventDefault();
+      results.querySelector('button')?.click();
+    }
+  });
 
 })();
 

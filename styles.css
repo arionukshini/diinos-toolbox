@@ -32,8 +32,7 @@ body{
   font-family:var(--mono);
   height:100vh;
   height:100dvh;
-  overflow-x:clip;
-  overflow-y:auto;
+  overflow:hidden;
 }
 
 @media (prefers-reduced-motion: no-preference){
@@ -76,7 +75,7 @@ main{ position:relative; z-index:1; }
   position:relative;
   height:100vh;
   height:100dvh;
-  min-height:480px;
+  min-height:0;
   display:flex;
   flex-direction:column;
   padding:16px clamp(14px, 3vw, 34px) clamp(14px, 3vh, 26px);
@@ -318,4 +317,57 @@ main{ position:relative; z-index:1; }
 @media (prefers-reduced-motion: reduce){
   .scan, .horn-l, .horn-r, .blink{ animation:none !important; }
   *, *::before, *::after{ transition:none !important; scroll-behavior:auto !important; }
+}
+
+/* A fixed viewport; only the tool directory scrolls. */
+.hero-content { bottom:clamp(14px,3vh,26px); max-height:calc(100% - 82px); padding-bottom:clamp(16px,2.5vh,28px); }
+.tools-trigger { flex-shrink:0; padding:4px 8px; border:1px solid #5c0d17; border-radius:4px; background:#180b0f; color:#e4a0a8; font:inherit; cursor:pointer; }
+.tools-trigger:hover, .tools-trigger:focus-visible { border-color:#ff3350; color:#fff; }
+.tools-menu { width:min(620px,calc(100vw - 28px)); height:min(560px,calc(100dvh - 32px)); max-width:none; max-height:none; margin:auto; padding:22px; border:1px solid #6b2835; border-radius:12px; background:linear-gradient(145deg,#1c1219,#100d12); color:#eee2e6; box-shadow:0 28px 100px #000b; font-family:var(--mono); }
+.tools-menu[open] { display:flex; flex-direction:column; gap:12px; }
+.tools-menu::backdrop { background:#050207ad; backdrop-filter:blur(6px); }
+.tools-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.tools-heading h2 { font-size:18px; font-weight:600; }
+.tools-menu button { font-family:inherit; cursor:pointer; }
+.tools-heading button, #backTools { background:transparent; color:#c4a3ad; border:1px solid #54303b; border-radius:5px; padding:7px 10px; }
+.tools-note { color:#b3909c; font-size:11px; }
+.search-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+#toolSearch { flex-shrink:0; width:100%; padding:13px 14px; border:1px solid #65404c; border-radius:6px; background:#09070a; color:#fff; font:14px var(--mono); }
+#toolSearch:focus { outline:2px solid #d04b63; outline-offset:2px; }
+.tools-scroll { min-height:0; overflow-y:auto; overscroll-behavior:contain; flex:1; scrollbar-width:thin; scrollbar-color:#74404f transparent; }
+.tool-item { display:flex; width:100%; gap:14px; align-items:center; text-align:left; padding:13px 10px; border:0; border-bottom:1px solid #38202c; border-radius:4px; background:transparent; color:#eee2e6; }
+.tool-item:hover, .tool-item:focus-visible { background:#57303e66; outline:1px solid #9d4c62; outline-offset:-1px; }
+.tool-symbol { display:grid; place-items:center; width:32px; height:32px; flex-shrink:0; border:1px solid #6c3345; border-radius:7px; color:#ff6b82; font-size:13px; }
+.tool-name { display:block; font-size:14px; }
+.tool-summary { display:block; color:#b79ba5; font-size:11px; line-height:1.5; margin-top:4px; }
+.tool-arrow { margin-left:auto; color:#ab6d80; }
+#noTools { padding:25px 10px; color:#b79ba5; font-size:13px; }
+#toolDetail { padding:8px 5px; }
+#toolDetail h3 { margin:22px 0 12px; color:#ff8193; font-size:20px; }
+#detailCopy { font-size:14px; line-height:1.8; }
+#detailPath { margin-top:20px; padding:12px; background:#080608; border:1px solid #442632; color:#c8a7b3; font-size:12px; line-height:1.7; overflow-wrap:anywhere; }
+.tools-footer { display:flex; justify-content:space-between; gap:10px; font-size:10px; color:#b3909c; padding-top:8px; border-top:1px solid #442632; }
+[hidden] { display:none !important; }
+@media(max-width:640px) {
+  .termbar { gap:7px; padding:8px; }
+  .termbar-dots { gap:4px; }
+  .termbar-dots span { width:7px; height:7px; }
+  .tools-trigger { font-size:10px; }
+  .tools-menu { padding:16px; }
+  .tools-footer span:last-child { display:none; }
+}
+@media(max-height:500px) {
+  .hero { padding-top:6px; padding-bottom:6px; }
+  .hero-content { padding-bottom:10px; }
+  .title { font-size:clamp(24px,5vw,40px); }
+  .eyebrow { font-size:10px; margin-bottom:4px; }
+  .tagline { font-size:12px; margin-top:5px; }
+  .dl-btn { margin-top:8px; padding:8px 12px; }
+  .foot-line { margin-top:6px; font-size:10px; }
+  .tools-menu[open] { gap:8px; }
+}
+@media(max-height:350px) {
+  .eyebrow, .foot-line { display:none; }
+  .title { font-size:26px; }
+  .tagline { font-size:11px; }
 }
